@@ -1,0 +1,11 @@
+--- gstnvbaseenc.old	2021-10-27 19:32:43.438789871 +0300
++++ gstnvbaseenc.c	2021-10-27 18:38:04.757719019 +0300
+@@ -2333,7 +2333,7 @@
+   pic_params.frameIdx = frame->system_frame_number;
+ 
+   if (GST_VIDEO_CODEC_FRAME_IS_FORCE_KEYFRAME (frame))
+-    pic_params.encodePicFlags = NV_ENC_PIC_FLAG_FORCEIDR;
++    pic_params.encodePicFlags = NV_ENC_PIC_FLAG_FORCEIDR | NV_ENC_PIC_FLAG_OUTPUT_SPSPPS;
+   else
+     pic_params.encodePicFlags = 0;
+ 
