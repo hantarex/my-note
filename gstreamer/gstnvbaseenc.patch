@@ -1,11 +1,24 @@
---- gstnvbaseenc.old	2021-10-27 19:32:43.438789871 +0300
-+++ gstnvbaseenc.c	2021-10-27 18:38:04.757719019 +0300
+--- /home/gstreamer/subprojects/gst-plugins-bad/sys/nvcodec/gstnvbaseenc.c      2021-11-23 17:04:17.000000000 +0300
++++ sys/nvcodec/gstnvbaseenc.c  2021-11-24 16:10:41.138707109 +0300
 @@ -2333,7 +2333,7 @@
    pic_params.frameIdx = frame->system_frame_number;
- 
+
    if (GST_VIDEO_CODEC_FRAME_IS_FORCE_KEYFRAME (frame))
 -    pic_params.encodePicFlags = NV_ENC_PIC_FLAG_FORCEIDR;
 +    pic_params.encodePicFlags = NV_ENC_PIC_FLAG_FORCEIDR | NV_ENC_PIC_FLAG_OUTPUT_SPSPPS;
    else
      pic_params.encodePicFlags = 0;
+
+@@ -2429,6 +2429,10 @@
+     return flow;
+   }
+
++  if (frame->presentation_frame_number % 30 == 0) {
++    GST_VIDEO_CODEC_FRAME_SET_FORCE_KEYFRAME (frame);
++  }
++
+   if (g_atomic_int_compare_and_exchange (&nvenc->reconfig, TRUE, FALSE)) {
+     if (!gst_nv_base_enc_set_format (enc, nvenc->input_state)) {
+       flow = GST_FLOW_NOT_NEGOTIATED;
+
  
